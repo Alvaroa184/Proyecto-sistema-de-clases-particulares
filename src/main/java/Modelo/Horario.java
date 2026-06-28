@@ -26,11 +26,13 @@ public class Horario {
     public LocalTime getHoraFin() {
         return horaFin;
     }
-    public boolean Superpone(Horario otro){
-        if (!this.dia.equals(otro.dia)){
+    public boolean Superpone(Horario otro) {
+        if (!this.dia.equals(otro.dia)) {
             return false;
         }
-        return this.horaInicio.isBefore(otro.horaInicio)&& this.horaFin.isAfter(otro.horaInicio);
+
+        return this.horaInicio.isBefore(otro.horaFin) &&
+                this.horaFin.isAfter(otro.horaInicio);
     }
     @Override
     public boolean equals(Object obj) {

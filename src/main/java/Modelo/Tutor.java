@@ -18,6 +18,12 @@ public class Tutor {
         this.materias = new ArrayList<>();
         this.horariosdisponibles = new ArrayList<>();
     }
+    public boolean imparteMateria(Materia materia) {
+        return materias.contains(materia);
+    }
+    public boolean tieneCupo(int cantidadReservasActuales) {
+        return cantidadReservasActuales < maximoestudiantes;
+    }
     public String getNombre() {
         return nombre;
     }
@@ -44,6 +50,18 @@ public class Tutor {
     }
     public boolean Disponible(Horario horario) {
         return this.horariosdisponibles.contains(horario);
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+    public void setTarifa(double tarifa) {
+        this.tarifa = tarifa;
+    }
+    public void setMaximoestudiantes(int maximoestudiantes) {
+        this.maximoestudiantes = maximoestudiantes;
     }
     @Override
     public String toString() {

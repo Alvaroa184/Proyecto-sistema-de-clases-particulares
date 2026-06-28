@@ -1,4 +1,23 @@
 package Controlador;
 
+import Modelo.*;
+
 public class Estudiante_con {
+
+    private SistemaDeReserva sistema;
+
+    public Estudiante_con(SistemaDeReserva sistema) {
+        this.sistema = sistema;
+    }
+
+    public void agregarEstudiante(Estudiante estudiante) {
+        sistema.agregarEstudiante(estudiante);
+    }
+
+    public Estudiante buscarEstudiante(String correo) {
+        return sistema.buscarEstudiante(correo);
+    }
+    public boolean editarEstudiante(String correo, String nuevoNombre, String nuevoCorreo) {
+        return sistema.editarEstudiante(correo, nuevoNombre, nuevoCorreo);
+    }
 }
