@@ -37,9 +37,21 @@ public class Vista_tutor extends JFrame {
             JTextField txtTarifa = new JTextField();
             JTextField txtMaximo = new JTextField();
             JTextField txtMateria = new JTextField();
+            JButton btnAgregarMateria = new JButton("Agregar materia");
+            DefaultListModel<Materia> modeloMaterias = new DefaultListModel<>();
+            JList<Materia> listaMaterias = new JList<>(modeloMaterias);
             JComboBox<String> cbDia = new JComboBox<>(new String[]{"Lunes", "Martes", "Miércoles", "Jueves", "Viernes"});
             JComboBox<String> cbHora = new JComboBox<>(new String[]{"08:00-10:00", "10:00-12:00", "12:00-14:00", "14:00-16:00", "16:00-18:00"});
-            Object[] mensaje = {"Nombre:", txtNombre, "Correo:", txtCorreo, "Tarifa:", txtTarifa, "Máximo estudiantes:", txtMaximo, "Materia:", txtMateria, "Día disponible:", cbDia, "Hora disponible:", cbHora};
+            btnAgregarMateria.addActionListener(j -> {
+                String nombreMateria = txtMateria.getText();
+
+                if (!nombreMateria.isBlank()) {
+                    modeloMaterias.addElement(new Materia(nombreMateria));
+                    txtMateria.setText("");
+                }
+            });
+
+            Object[] mensaje = {"Nombre:", txtNombre, "Correo:", txtCorreo, "Tarifa:", txtTarifa, "Máximo estudiantes:", txtMaximo, "Materia:", txtMateria, "", btnAgregarMateria, "Materias:", new JScrollPane(listaMaterias), "Día disponible:", cbDia, "Hora disponible:", cbHora};
 
             int opcion = JOptionPane.showConfirmDialog(this, mensaje, "Añadir Tutor", JOptionPane.OK_CANCEL_OPTION);
             if (opcion == JOptionPane.OK_OPTION) {
@@ -47,17 +59,15 @@ public class Vista_tutor extends JFrame {
                 String correo = txtCorreo.getText();
                 double tarifa = Double.parseDouble(txtTarifa.getText());
                 int maximo = Integer.parseInt(txtMaximo.getText());
-                String materia = txtMateria.getText();
                 Tutor tutor = FabricaPersona.crearTutor(nombre, correo, tarifa, maximo);
-                tutor.agregarMateria(new Materia(materia));
-                Horario horario = crearHorario(
-                        cbDia.getSelectedItem().toString(),
-                        cbHora.getSelectedItem().toString()
-                );
+                for (int i = 0; i < modeloMaterias.size(); i++) {
+                    tutor.agregarMateria(modeloMaterias.get(i));
+                }
+                Horario horario = crearHorario(cbDia.getSelectedItem().toString(), cbHora.getSelectedIndex());
                 tutor.agregarHorario(horario);
                 tutorCon.agregarTutor(tutor);
-                JOptionPane.showMessageDialog(this, "Tutor agregado correctamente.");
-            }});
+                JOptionPane.showMessageDialog(this, "Tutor agregado correctamente.");}});
+
 
         btnSalir.addActionListener(e -> {
             dispose();
@@ -72,14 +82,11 @@ public class Vista_tutor extends JFrame {
         }
         return DayOfWeek.MONDAY;
     }
-    private Horario crearHorario(String diaTexto, String horaTexto) {
-        DayOfWeek dia = convertirDia(diaTexto);
-        switch (horaTexto) {
-            case "08:00-10:00": return new Horario(dia, LocalTime.of(8,0), LocalTime.of(10,0));
-            case "10:00-12:00": return new Horario(dia, LocalTime.of(10,0), LocalTime.of(12,0));
-            case "12:00-14:00": return new Horario(dia, LocalTime.of(12,0), LocalTime.of(14,0));
-            case "14:00-16:00": return new Horario(dia, LocalTime.of(14,0), LocalTime.of(16,0));
-            default: return new Horario(dia, LocalTime.of(16,0), LocalTime.of(18,0));
-        }
+    private Horario crearHorario(String diaTexto, int bloque) {
+        return new Horario(
+                convertirDia(diaTexto),
+                LocalTime.of(8 + bloque * 2, 0),
+                LocalTime.of(10 + bloque * 2, 0)
+        );
     }
 }

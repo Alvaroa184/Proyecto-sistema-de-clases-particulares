@@ -13,6 +13,7 @@ public class Vista_principal extends JFrame {
     private Estudiante_con estudianteCon;
     private reserva_con reservaCon;
 
+
     public Vista_principal() {
         sistema = new SistemaDeReserva();
 
@@ -70,10 +71,24 @@ public class Vista_principal extends JFrame {
             new Vista_estudiante(estudianteCon).setVisible(true);
         });
         btnReserva.addActionListener(e -> {
-            new Vista_reserva(reservaCon, tutorCon, estudianteCon).setVisible(true);
+            new Vista_reserva(reservaCon, tutorCon, estudianteCon, this).setVisible(true);
         });
         btnSalir.addActionListener(e -> {
             dispose();
-        });
+        });}
+
+        public void actualizarHorario() {
+
+            for (Reserva reserva : sistema.getReservas()) {
+
+                Horario horario = reserva.getHorario();
+
+                int fila = (horario.getHoraInicio().getHour() - 8) / 2;
+                int columna = horario.getDia().getValue() - 1;
+
+                botonesHorario[fila][columna].setText(
+                        reserva.getMateria().getNombre()
+                );
+            }
+        }
     }
-}

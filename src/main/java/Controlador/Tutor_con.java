@@ -30,4 +30,7 @@ public class Tutor_con {
     public ArrayList<Tutor> buscarPorMateriaYHorario(Materia materia, Horario horario) {
         return sistema.buscarTutores(new BusquedaTutorPorMateriaYHorario(materia, horario));
     }
+    public ArrayList<Tutor> getTutores() {
+        return sistema.getTutores();
+    }
 }

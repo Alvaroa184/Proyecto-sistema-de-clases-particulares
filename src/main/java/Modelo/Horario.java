@@ -47,6 +47,8 @@ public class Horario {
     }
     @Override
     public String toString() {
-        return dia + " " + horaInicio + " " + horaFin;
+        String[] dias = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
+        return dias[dia.getValue() - 1] + " " + horaInicio + " - " + horaFin;
     }
+
 }

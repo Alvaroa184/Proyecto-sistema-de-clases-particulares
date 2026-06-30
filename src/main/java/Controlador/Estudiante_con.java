@@ -1,5 +1,5 @@
 package Controlador;
-
+import java.util.ArrayList;
 import Modelo.*;
 
 public class Estudiante_con {
@@ -19,5 +19,8 @@ public class Estudiante_con {
     }
     public boolean editarEstudiante(String correo, String nuevoNombre, String nuevoCorreo) {
         return sistema.editarEstudiante(correo, nuevoNombre, nuevoCorreo);
+    }
+    public ArrayList<Estudiante> getEstudiantes() {
+        return sistema.getEstudiantes();
     }
 }
