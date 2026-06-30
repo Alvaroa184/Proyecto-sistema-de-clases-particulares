@@ -155,4 +155,42 @@ public class SistemaDeReservaTest {
     public void editarEstudiante_EstudianteNoExiste_Detectado() {
         assertFalse(sistema.editarEstudiante("ron@hogwarts.hsh", "Ronald Bilius Weasley", "nuevo@hogwarts.hsh"));
     }
+
+    @Test
+    public void cancelarReserva_ReservaExiste_Exitoso() {
+        sistema.crearReserva(estudiante, tutor, matematicas, lunes10a12);
+
+        boolean cancelada = sistema.cancelarReserva(estudiante, tutor, lunes10a12);
+
+        assertTrue(cancelada);
+        assertEquals(0, sistema.getReservas().size());
+        assertEquals(0, estudiante.getReservas().size());
+    }
+
+    @Test
+    public void cancelarReserva_ReservaNoExiste_Detectado() {
+        assertFalse(sistema.cancelarReserva(estudiante, tutor, lunes10a12));
+    }
+
+    @Test
+    public void eliminarTutor_Exitoso() {
+        sistema.eliminarTutor(tutor);
+        assertEquals(0, sistema.getTutores().size());
+    }
+
+    @Test
+    public void eliminarEstudiante_Exitoso() {
+        sistema.eliminarEstudiante(estudiante);
+        assertEquals(0, sistema.getEstudiantes().size());
+    }
+
+    @Test
+    public void eliminarReserva_Exitoso() {
+        sistema.crearReserva(estudiante, tutor, matematicas, lunes10a12);
+        Reserva reserva = sistema.getReservas().get(0);
+
+        sistema.eliminarReserva(reserva);
+
+        assertEquals(0, sistema.getReservas().size());
+    }
 }
