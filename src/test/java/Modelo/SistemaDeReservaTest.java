@@ -95,4 +95,64 @@ public class SistemaDeReservaTest {
         assertEquals(2, sistema.getReservas().size());
     }
 
+    @Test
+    public void buscarTutor_NombreDistintoComoRegistro() {
+        assertSame(tutor, sistema.buscarTutor("severus snape"));
+    }
+
+    @Test
+    public void buscarTutor_NoExiste() {
+        assertNull(sistema.buscarTutor("Albus Dumbledore"));
+    }
+
+    @Test
+    public void buscarEstudiante_CorreoDistintoComoRegistro() {
+        assertSame(estudiante, sistema.buscarEstudiante("HARRY@hogwarts.hsh"));
+    }
+
+    @Test
+    public void buscarEstudiante_NoExiste() {
+        assertNull(sistema.buscarEstudiante("ron@hogwarts.hsh"));
+    }
+
+    @Test
+    public void buscarTutores_EstrategiaPorMateria_Exitoso() {
+        Tutor otro = new Tutor("Pomona Sprout", "pomona@hogwarts.hsh", 80.0, 3);
+        otro.agregarMateria(new Materia("Herbologia"));
+        sistema.agregarTutor(otro);
+
+        ArrayList<Tutor> resultado = sistema.buscarTutores(new BusquedaTutorPorMateria(matematicas));
+
+        assertEquals(1, resultado.size());
+        assertTrue(resultado.contains(tutor));
+    }
+
+    @Test
+    public void editarTutor_TutorExiste_Exitoso() {
+        boolean editado = sistema.editarTutor("Severus Snape", "nuevo@hogwarts.hsh", 150.0, 8);
+
+        assertTrue(editado);
+        assertEquals("nuevo@hogwarts.hsh", tutor.getCorreo());
+        assertEquals(150.0, tutor.getTarifa());
+        assertEquals(8, tutor.getMaximoestudiantes());
+    }
+
+    @Test
+    public void editarTutor_TutorNoExiste_Detectado() {
+        assertFalse(sistema.editarTutor("Pomona Sprout", "nuevo@hogwarts.hsh", 1.0, 1));
+    }
+
+    @Test
+    public void editarEstudiante_EstudianteExiste_Existoso() {
+        boolean editado = sistema.editarEstudiante("harry@hogwarts.hsh", "Harry James Potter", "hjp@hogwarts.hsh");
+
+        assertTrue(editado);
+        assertEquals("Harry James Potter", estudiante.getNombre());
+        assertEquals("hjp@hogwarts.hsh", estudiante.getCorreo());
+    }
+
+    @Test
+    public void editarEstudiante_EstudianteNoExiste_Detectado() {
+        assertFalse(sistema.editarEstudiante("ron@hogwarts.hsh", "Ronald Bilius Weasley", "nuevo@hogwarts.hsh"));
+    }
 }
