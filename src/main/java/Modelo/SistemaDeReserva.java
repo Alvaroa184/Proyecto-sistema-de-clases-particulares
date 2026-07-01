@@ -54,9 +54,11 @@ public class SistemaDeReserva {
         return false;
     }
     public void eliminarTutor(Tutor tutor) {
+        reservas.removeIf(reserva -> reserva.getTutor().equals(tutor));
         tutores.remove(tutor);
     }
     public void eliminarEstudiante(Estudiante estudiante) {
+        reservas.removeIf(reserva -> reserva.getEstudiante().equals(estudiante));
         estudiantes.remove(estudiante);
     }
     public void eliminarReserva(Reserva reserva) {
