@@ -25,4 +25,8 @@ public class Reserva {
     public Materia getMateria() {
         return materia;
     }
+    @Override
+    public String toString() {
+        return materia + " - " + tutor.getNombre() + " - " + horario;
+    }
 }

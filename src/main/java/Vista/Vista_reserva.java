@@ -33,7 +33,7 @@ public class Vista_reserva extends JFrame {
         add(btnCrear);
         add(btnCancelar);
         add(btnSalir);
-
+        btnCancelar.addActionListener(e -> cancelarReserva());
         btnCrear.addActionListener(e -> crearReserva());
         btnSalir.addActionListener(e -> dispose());
 
@@ -54,22 +54,17 @@ public class Vista_reserva extends JFrame {
         for (Estudiante estudiante : estudianteCon.getEstudiantes()) {
             cbEstudiante.addItem(estudiante);
         }
-
         for (Tutor tutor : tutorCon.getTutores()) {
             cbTutor.addItem(tutor);
         }
-
         cbTutor.addActionListener(e ->
                 cargarDatosTutor((Tutor) cbTutor.getSelectedItem(), cbMateria, cbHorario)
         );
-
         if (cbTutor.getItemCount() > 0) {
             cargarDatosTutor((Tutor) cbTutor.getSelectedItem(), cbMateria, cbHorario);
         }
-
         btnAgregarEstudiante.addActionListener(e -> {
             Estudiante estudiante = (Estudiante) cbEstudiante.getSelectedItem();
-
             if (estudiante != null && !modeloInscritos.contains(estudiante)) {
                 modeloInscritos.addElement(estudiante);
             }
@@ -96,7 +91,6 @@ public class Vista_reserva extends JFrame {
                     todasCreadas = false;
                 }
             }
-
             vistaPrincipal.actualizarHorario();
 
             JOptionPane.showMessageDialog(this, todasCreadas ? "Reservas creadas correctamente." : "Algunas reservas no se pudieron crear.");
@@ -112,6 +106,86 @@ public class Vista_reserva extends JFrame {
         }
         for (Horario horario : tutor.getHorariosdisponibles()) {
             cbHorario.addItem(horario);
+        }
+    }
+    private void cancelarReserva() {
+        String opcion = (String) JOptionPane.showInputDialog(this, "¿Cómo quieres cancelar?", "Cancelar reserva", JOptionPane.QUESTION_MESSAGE, null, new String[]{"Cancelar reserva general", "Cancelar reserva de estudiante"}, "Cancelar reserva general");
+        if (opcion == null) {
+            return;
+        }
+        if (opcion.equals("Cancelar reserva general")) {
+            cancelarReservaGeneral();
+        }
+        if (opcion.equals("Cancelar reserva de estudiante")) {
+            cancelarReservaEstudiante();
+        }
+    }
+    private void cancelarReservaGeneral() {
+        JComboBox<Reserva> cbReserva = new JComboBox<>();
+        for (Reserva reserva : reservaCon.getReservas()) {
+            cbReserva.addItem(reserva);
+        }
+        if (cbReserva.getItemCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No hay reservas registradas.");
+            return;
+        }
+        int opcion = JOptionPane.showConfirmDialog(this, cbReserva, "Seleccionar reserva", JOptionPane.OK_CANCEL_OPTION);
+        if (opcion != JOptionPane.OK_OPTION) {
+            return;
+        }
+        Reserva reserva = (Reserva) cbReserva.getSelectedItem();
+        if (reserva != null) {
+            reservaCon.eliminarReserva(reserva);
+            reserva.getEstudiante().getReservas().remove(reserva);
+            vistaPrincipal.actualizarHorario();
+            JOptionPane.showMessageDialog(this, "Reserva cancelada correctamente.");
+        }
+    }
+    private void cargarReservasEstudiante(Estudiante estudiante, JComboBox<Reserva> cbReserva) {
+        cbReserva.removeAllItems();
+        if (estudiante == null) {
+            return;
+        }
+        for (Reserva reserva : estudiante.getReservas()) {
+            cbReserva.addItem(reserva);
+        }
+    }
+    private void cancelarReservaEstudiante() {
+        JComboBox<Estudiante> cbEstudiante = new JComboBox<>();
+        JComboBox<Reserva> cbReserva = new JComboBox<>();
+        for (Estudiante estudiante : estudianteCon.getEstudiantes()) {
+            cbEstudiante.addItem(estudiante);
+        }
+        if (cbEstudiante.getItemCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No hay estudiantes registrados.");
+            return;
+        }
+        cbEstudiante.addActionListener(e -> cargarReservasEstudiante(
+                (Estudiante) cbEstudiante.getSelectedItem(),
+                cbReserva
+        ));
+        cargarReservasEstudiante(
+                (Estudiante) cbEstudiante.getSelectedItem(),
+                cbReserva
+        );
+        Object[] datos = {"Estudiante:", cbEstudiante, "Reserva:", cbReserva};
+
+        int opcion = JOptionPane.showConfirmDialog(this, datos, "Cancelar reserva de estudiante", JOptionPane.OK_CANCEL_OPTION);
+
+        if (opcion != JOptionPane.OK_OPTION) {
+            return;
+        }
+        Estudiante estudiante = (Estudiante) cbEstudiante.getSelectedItem();
+        Reserva reserva = (Reserva) cbReserva.getSelectedItem();
+        if (estudiante == null || reserva == null) {
+            JOptionPane.showMessageDialog(this, "Selecciona una reserva válida.");
+            return;
+        }
+        boolean cancelada = reservaCon.cancelarReserva(estudiante, reserva.getTutor(), reserva.getHorario());
+        if (cancelada) {vistaPrincipal.actualizarHorario();
+            JOptionPane.showMessageDialog(this, "Reserva cancelada correctamente.");
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo cancelar la reserva.");
         }
     }
 }
