@@ -6,6 +6,7 @@ public class Estudiante_con {
 
     private SistemaDeReserva sistema;
 
+
     public Estudiante_con(SistemaDeReserva sistema) {
         this.sistema = sistema;
     }
@@ -22,5 +23,8 @@ public class Estudiante_con {
     }
     public ArrayList<Estudiante> getEstudiantes() {
         return sistema.getEstudiantes();
+    }
+    public void eliminarEstudiante(Estudiante estudiante) {
+        sistema.eliminarEstudiante(estudiante);
     }
 }

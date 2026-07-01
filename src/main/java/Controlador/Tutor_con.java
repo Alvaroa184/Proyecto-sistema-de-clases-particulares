@@ -33,4 +33,7 @@ public class Tutor_con {
     public ArrayList<Tutor> getTutores() {
         return sistema.getTutores();
     }
+    public void eliminarTutor(Tutor tutor) {
+        sistema.eliminarTutor(tutor);
+    }
 }
