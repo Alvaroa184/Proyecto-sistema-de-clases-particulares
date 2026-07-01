@@ -63,21 +63,32 @@ public class Vista_formularioTutor {
         if (opcion != JOptionPane.OK_OPTION) {
             return null;
         }
+
+        double tarifa;
+        int maximo;
+        try {
+            tarifa = Double.parseDouble(txtTarifa.getText());
+            maximo = Integer.parseInt(txtMaximo.getText());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(padre, "Tarifa y máximo de estudiantes deben ser números válidos.");
+            return null;
+        }
+
         Tutor tutor;
         if (editando) {
             tutor = tutorEditar;
             tutor.setNombre(txtNombre.getText());
             tutor.setCorreo(txtCorreo.getText());
-            tutor.setTarifa(Double.parseDouble(txtTarifa.getText()));
-            tutor.setMaximoestudiantes(Integer.parseInt(txtMaximo.getText()));
+            tutor.setTarifa(tarifa);
+            tutor.setMaximoestudiantes(maximo);
             tutor.getMaterias().clear();
             tutor.getHorariosdisponibles().clear();
         } else {
             tutor = FabricaPersona.crearTutor(
                     txtNombre.getText(),
                     txtCorreo.getText(),
-                    Double.parseDouble(txtTarifa.getText()),
-                    Integer.parseInt(txtMaximo.getText())
+                    tarifa,
+                    maximo
             );
         }
 
