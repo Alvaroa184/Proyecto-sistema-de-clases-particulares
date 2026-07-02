@@ -40,8 +40,10 @@ public class Vista_estudiante extends JFrame {
     private void agregarEstudiante() {
         Estudiante estudiante = mostrarFormularioEstudiante(null);
         if (estudiante != null) {
-            estudianteCon.agregarEstudiante(estudiante);
-            JOptionPane.showMessageDialog(this, "Estudiante agregado correctamente.");
+            boolean agregado = estudianteCon.agregarEstudiante(estudiante);
+            JOptionPane.showMessageDialog(this, agregado
+                    ? "Estudiante agregado correctamente."
+                    : "Ya existe un estudiante con ese correo.");
         }
     }
     private void buscarEstudiante() {
@@ -114,6 +116,9 @@ public class Vista_estudiante extends JFrame {
             return null;
         }
         if (txtNombre.getText().isBlank() || txtCorreo.getText().isBlank()) {JOptionPane.showMessageDialog(this, "Completa todos los campos.");
+            return null;
+        }
+        if (!txtCorreo.getText().contains("@")) {JOptionPane.showMessageDialog(this, "Ingresa un correo válido (debe contener @).");
             return null;
         }
         if (editando) {estudianteEditar.setNombre(txtNombre.getText());estudianteEditar.setCorreo(txtCorreo.getText());

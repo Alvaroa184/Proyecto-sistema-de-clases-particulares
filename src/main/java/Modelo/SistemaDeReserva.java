@@ -12,11 +12,19 @@ public class SistemaDeReserva {
         this.tutores = new ArrayList<>();
         this.estudiantes = new ArrayList<>();
     }
-    public void agregarTutor(Tutor tutor) {
+    public boolean agregarTutor(Tutor tutor) {
+        if (buscarTutor(tutor.getNombre()) != null) {
+            return false;
+        }
         tutores.add(tutor);
+        return true;
     }
-    public void agregarEstudiante(Estudiante estudiante) {
+    public boolean agregarEstudiante(Estudiante estudiante) {
+        if (buscarEstudiante(estudiante.getCorreo()) != null) {
+            return false;
+        }
         estudiantes.add(estudiante);
+        return true;
     }
     public boolean crearReserva(Estudiante estudiante, Tutor tutor, Materia materia, Horario horario) {
         if (!tutor.imparteMateria(materia)) {
@@ -54,9 +62,11 @@ public class SistemaDeReserva {
         return false;
     }
     public void eliminarTutor(Tutor tutor) {
+        reservas.removeIf(reserva -> reserva.getTutor().equals(tutor));
         tutores.remove(tutor);
     }
     public void eliminarEstudiante(Estudiante estudiante) {
+        reservas.removeIf(reserva -> reserva.getEstudiante().equals(estudiante));
         estudiantes.remove(estudiante);
     }
     public void eliminarReserva(Reserva reserva) {

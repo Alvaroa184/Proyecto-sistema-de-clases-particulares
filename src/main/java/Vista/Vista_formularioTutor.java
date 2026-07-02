@@ -63,21 +63,45 @@ public class Vista_formularioTutor {
         if (opcion != JOptionPane.OK_OPTION) {
             return null;
         }
+
+        if (txtCorreo.getText().isBlank() || !txtCorreo.getText().contains("@")) {
+            JOptionPane.showMessageDialog(padre, "Ingresa un correo válido (debe contener @).");
+            return null;
+        }
+
+        double tarifa;
+        int maximo;
+        try {
+            tarifa = Double.parseDouble(txtTarifa.getText());
+            maximo = Integer.parseInt(txtMaximo.getText());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(padre, "Tarifa y máximo de estudiantes deben ser números válidos.");
+            return null;
+        }
+        if (tarifa <= 0) {
+            JOptionPane.showMessageDialog(padre, "La tarifa debe ser mayor a 0.");
+            return null;
+        }
+        if (maximo <= 0) {
+            JOptionPane.showMessageDialog(padre, "El máximo de estudiantes debe ser mayor a 0.");
+            return null;
+        }
+
         Tutor tutor;
         if (editando) {
             tutor = tutorEditar;
             tutor.setNombre(txtNombre.getText());
             tutor.setCorreo(txtCorreo.getText());
-            tutor.setTarifa(Double.parseDouble(txtTarifa.getText()));
-            tutor.setMaximoestudiantes(Integer.parseInt(txtMaximo.getText()));
+            tutor.setTarifa(tarifa);
+            tutor.setMaximoestudiantes(maximo);
             tutor.getMaterias().clear();
             tutor.getHorariosdisponibles().clear();
         } else {
             tutor = FabricaPersona.crearTutor(
                     txtNombre.getText(),
                     txtCorreo.getText(),
-                    Double.parseDouble(txtTarifa.getText()),
-                    Integer.parseInt(txtMaximo.getText())
+                    tarifa,
+                    maximo
             );
         }
 

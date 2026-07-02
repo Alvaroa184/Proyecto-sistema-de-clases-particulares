@@ -35,8 +35,10 @@ public class Vista_tutor extends JFrame {
         btnAgregar.addActionListener(e -> {
             Tutor tutor = Vista_formularioTutor.mostrar(this, null);
             if (tutor != null) {
-                tutorCon.agregarTutor(tutor);
-                JOptionPane.showMessageDialog(this, "Tutor agregado correctamente.");
+                boolean agregado = tutorCon.agregarTutor(tutor);
+                JOptionPane.showMessageDialog(this, agregado
+                        ? "Tutor agregado correctamente."
+                        : "Ya existe un tutor con ese nombre.");
             }
         });
 
