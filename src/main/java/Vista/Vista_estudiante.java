@@ -40,8 +40,10 @@ public class Vista_estudiante extends JFrame {
     private void agregarEstudiante() {
         Estudiante estudiante = mostrarFormularioEstudiante(null);
         if (estudiante != null) {
-            estudianteCon.agregarEstudiante(estudiante);
-            JOptionPane.showMessageDialog(this, "Estudiante agregado correctamente.");
+            boolean agregado = estudianteCon.agregarEstudiante(estudiante);
+            JOptionPane.showMessageDialog(this, agregado
+                    ? "Estudiante agregado correctamente."
+                    : "Ya existe un estudiante con ese correo.");
         }
     }
     private void buscarEstudiante() {

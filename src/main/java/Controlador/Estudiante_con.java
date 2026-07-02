@@ -11,9 +11,7 @@ public class Estudiante_con {
         this.sistema = sistema;
     }
 
-    public void agregarEstudiante(Estudiante estudiante) {
-        sistema.agregarEstudiante(estudiante);
-    }
+    public boolean agregarEstudiante(Estudiante estudiante) {return sistema.agregarEstudiante(estudiante);}
 
     public Estudiante buscarEstudiante(String correo) {
         return sistema.buscarEstudiante(correo);

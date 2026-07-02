@@ -10,9 +10,7 @@ public class Tutor_con {
         this.sistema = sistema;
     }
 
-    public void agregarTutor(Tutor tutor) {
-        sistema.agregarTutor(tutor);
-    }
+    public boolean agregarTutor(Tutor tutor) {return sistema.agregarTutor(tutor);}
 
     public Tutor buscarTutor(String nombre) {
         return sistema.buscarTutor(nombre);
