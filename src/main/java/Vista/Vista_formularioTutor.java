@@ -64,6 +64,11 @@ public class Vista_formularioTutor {
             return null;
         }
 
+        if (txtCorreo.getText().isBlank() || !txtCorreo.getText().contains("@")) {
+            JOptionPane.showMessageDialog(padre, "Ingresa un correo válido (debe contener @).");
+            return null;
+        }
+
         double tarifa;
         int maximo;
         try {
@@ -71,6 +76,14 @@ public class Vista_formularioTutor {
             maximo = Integer.parseInt(txtMaximo.getText());
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(padre, "Tarifa y máximo de estudiantes deben ser números válidos.");
+            return null;
+        }
+        if (tarifa <= 0) {
+            JOptionPane.showMessageDialog(padre, "La tarifa debe ser mayor a 0.");
+            return null;
+        }
+        if (maximo <= 0) {
+            JOptionPane.showMessageDialog(padre, "El máximo de estudiantes debe ser mayor a 0.");
             return null;
         }
 

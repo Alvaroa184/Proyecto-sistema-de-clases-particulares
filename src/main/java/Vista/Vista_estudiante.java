@@ -118,6 +118,9 @@ public class Vista_estudiante extends JFrame {
         if (txtNombre.getText().isBlank() || txtCorreo.getText().isBlank()) {JOptionPane.showMessageDialog(this, "Completa todos los campos.");
             return null;
         }
+        if (!txtCorreo.getText().contains("@")) {JOptionPane.showMessageDialog(this, "Ingresa un correo válido (debe contener @).");
+            return null;
+        }
         if (editando) {estudianteEditar.setNombre(txtNombre.getText());estudianteEditar.setCorreo(txtCorreo.getText());
             return estudianteEditar;
         }
